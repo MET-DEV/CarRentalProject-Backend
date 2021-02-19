@@ -4,12 +4,12 @@ using System.Text;
 
 namespace MyCore.Utilities.Results
 {
-    public class SuccessResult : Result
+    public class SuccessDataResult : Result
     {
-        public SuccessResult(string message) : base(true, message)
+        public SuccessDataResult(string message) : base(true, message)
         {
         }
-        public SuccessResult() : base(true)
+        public SuccessDataResult() : base(true)
         {
         }
 
