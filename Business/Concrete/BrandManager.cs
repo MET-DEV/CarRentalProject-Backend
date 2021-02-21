@@ -1,6 +1,9 @@
 ﻿using Business.Abstract;
+using Business.ValidationRules.FluentValidation;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using MyCore.Aspects.Autofac.Validation;
+using MyCore.Utilities.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +18,13 @@ namespace Business.Concrete
         {
             _brandDal = brandDal;
         }
+        [ValidationAspect(typeof(BrandValidator))]
+        public IResult Add(Brand brand)
+        {
+            _brandDal.Add(brand);
+            return new SuccessDataResult();
+        }
+
         public List<Brand> GetAll()
         {
             return _brandDal.GetAll().ToList();
