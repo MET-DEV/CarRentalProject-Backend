@@ -10,6 +10,7 @@ using System.Text;
 using System.Linq;
 using MyCore.Aspects.Autofac.Validation;
 using Business.ValidationRules.FluentValidation;
+using DataAccess.Concrete;
 
 namespace Business.Concrete
 {
@@ -24,28 +25,38 @@ namespace Business.Concrete
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
-            
-            
-            
-             _rentalDal.Add(rental);
-              return new SuccessDataResult(Messages.RentAdded);
+            var result = _rentalDal.GetAll(c => c.CarId == rental.CarId && c.ReturnDate >=DateTime.MinValue).ToList();
+
+
+            if (result.Count == 0)
+            {
+
+                return new ErrorResult(Messages.VehicleIsBusy);
+            }
+            else
+            {
+                _rentalDal.Add(rental);
+                return new SuccessDataResult(Messages.RentAdded);
+            }
+
+
         }
 
         public IDataResult<List<Rental>> GetAllRentals()
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll());
         }
 
         public IDataResult<Rental> GetById(int rentalId)
         {
-            return new SuccessDataResult<Rental>(_rentalDal.Get(r=>r.Id==rentalId));
+            return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.Id == rentalId));
         }
 
-        
+
 
         public IDataResult<List<RentalDetailDto>> GetRentalDetails()
         {
-            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetailDtos(),Messages.DetailListed);
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetailDtos(), Messages.DetailListed);
         }
     }
 }
