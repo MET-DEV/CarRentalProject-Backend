@@ -15,5 +15,9 @@
     <ProjectReference Include="..\MyCore\MyCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 
 </Project>
