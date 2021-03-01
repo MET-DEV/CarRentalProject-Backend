@@ -3,6 +3,7 @@ using Business.ValidationRules.FluentValidation;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using MyCore.Aspects.Autofac.Validation;
+using MyCore.Entities.Concrete;
 using MyCore.Utilities.Results;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,14 @@ namespace Business.Concrete
         public IDataResult<List<User>> GetAll()
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll());
+        }
+        public User GetByMail(string email)
+        {
+            return _userDal.Get(u => u.Email == email);
+        }
+        public List<OperationClaim> GetClaims(User user)
+        {
+            return _userDal.GetClaims(user);
         }
     }
 }

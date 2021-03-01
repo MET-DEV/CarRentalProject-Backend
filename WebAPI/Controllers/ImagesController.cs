@@ -42,7 +42,7 @@ namespace WebAPI.Controllers
             {
                 CarImage carImage = new CarImage();
                 string path = _webHostEnvironment.WebRootPath + "\\uploads\\";
-                carImage.ImagePath = path;
+                carImage.ImagePath =path;
                 carImage.Date = DateTime.Now;
                 carImage.CarId = imagesUpload.CarId;
                 _carImageService.Add(carImage);

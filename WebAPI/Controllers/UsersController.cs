@@ -2,6 +2,7 @@
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MyCore.Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
