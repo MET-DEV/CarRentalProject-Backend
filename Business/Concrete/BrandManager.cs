@@ -25,9 +25,9 @@ namespace Business.Concrete
             return new SuccessDataResult();
         }
 
-        public List<Brand> GetAll()
+        public IDataResult<List<Brand>> GetAll()
         {
-            return _brandDal.GetAll().ToList();
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());
         }
 
         public Brand GetById(int brandId)

@@ -34,50 +34,29 @@ namespace WebAPI.Controllers
             return Ok(context);
             
         }
-        
         [HttpPost("add")]
-        public IActionResult Add([FromForm] ImagesUploadDetail imagesUpload)
+        public IActionResult Add([FromForm] IFormFile image, [FromForm] CarImage carImage)
         {
-            try
+
+            var result = _carImageService.Add(image, carImage);
+            if (result.Success)
             {
-                CarImage carImage = new CarImage();
-                string path = _webHostEnvironment.WebRootPath + "\\uploads\\";
-                carImage.ImagePath =path;
-                carImage.Date = DateTime.Now;
-                carImage.CarId = imagesUpload.CarId;
-                _carImageService.Add(carImage);
-               
-                if (imagesUpload.Files.Length > 0)
-                {
-                    
-                    
-                    if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
-                    }
-                    
-                    var fileExtension = Path.GetExtension(imagesUpload.Files.FileName);
-                    using (FileStream fileStream = System.IO.File.Create(path + Guid.NewGuid().ToString("D") + fileExtension))
-                    {
-                       
-
-                        imagesUpload.Files.CopyTo(fileStream);
-                        fileStream.Flush();
-                        
-
-                        return Ok("Success");
-
-
-                    }
-                }
+                return Ok(result);
             }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            return BadRequest();
+            return BadRequest(result);
         }
+
+
+        //[HttpPost("add")]
+        //public IActionResult Add([FromForm] IFormFile Files, [FromForm] CarImage carImage)
+        //{
+        //    var result = _carImageService.Addd(Files, carImage);
+        //    if (result.Success)
+        //    {
+        //        return Ok(result);
+        //    }
+        //    return BadRequest(result);
+        //}
         [HttpPost("delete")]
         public IActionResult Delete(CarImage carImage)
         {

@@ -1,12 +1,16 @@
 ﻿using Business.Abstract;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Http;
 using MyCore.Utilities.Business;
 using MyCore.Utilities.Results;
 using System;
 using System.Collections.Generic;
+using MyCore.Utilities.FileHelper;
 using System.Linq;
 using System.Text;
+using Entities.DTOS;
+using Business.Constants;
 
 namespace Business.Concrete
 {
@@ -19,16 +23,41 @@ namespace Business.Concrete
             _carImageDal = carImageDal;
         }
 
-        public IResult Add(CarImage carImage)
+        public IResult Add(IFormFile formFile, CarImage carImage)
         {
-            var result = BusinessRules.Run(CheckImageLimit(carImage.CarId));
-            if (result!=null)
+
+            IResult result = BusinessRules.Run(CheckImageLimit(carImage.CarId));
+
+            if (result != null)
             {
-                return result;
+                return new ErrorResult();
             }
+            var pathResult = FileHelper.Add(formFile);
+            carImage.ImagePath = pathResult.Message;
+            carImage.Date = DateTime.Now;
+            
             _carImageDal.Add(carImage);
-            return new SuccessDataResult();
+            return new SuccessDataResult("Eklendi");
+
         }
+
+        public IResult Addd(IFormFile File, CarImage carImage)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        //public IResult Addd(IFormFile File, CarImage carImage)
+        //{
+
+
+
+
+        //    carImage.ImagePath = FileHelper.Add(File);
+        //    carImage.Date = DateTime.Now;
+        //    _carImageDal.Add(carImage);
+        //    return new SuccessDataResult();
+        //}
 
         public IResult Delete(CarImage carImage)
         {

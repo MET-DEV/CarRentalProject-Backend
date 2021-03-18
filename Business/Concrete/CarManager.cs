@@ -12,6 +12,7 @@ using MyCore.Utilities.Results;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace Business.Concrete
 {
@@ -60,11 +61,23 @@ namespace Business.Concrete
 
         public IDataResult<List<CarDetailDto>>  GetCarDetails()
         {
-            if (DateTime.Now.Hour == 15)
+            if (DateTime.Now.Hour == 14)
             {
                 return new ErrorDataResult<List<CarDetailDto>>(Messages.MaintenanceTime);
             }
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(),message: Messages.CarListed);
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsBrandId(int brandId)
+        {
+            var context = _carDal.GetCarDetails().Where(r => r.BrandId == brandId).ToList();
+            return new SuccessDataResult<List<CarDetailDto>>(context);
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsColorId(int colorId)
+        {
+            var context = _carDal.GetCarDetails().Where(r => r.ColorId == colorId).ToList();
+            return new SuccessDataResult<List<CarDetailDto>>(context);
         }
     }
 }
