@@ -74,6 +74,13 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarDetailDto>>(context);
         }
 
+        public IDataResult<CarDetailDto> GetCarDetailsCarId(int carId)
+        {
+
+            var context = _carDal.GetCarDetails().SingleOrDefault(c => c.CarId == carId);
+            return new SuccessDataResult<CarDetailDto>(context);
+        }
+
         public IDataResult<List<CarDetailDto>> GetCarDetailsColorId(int colorId)
         {
             var context = _carDal.GetCarDetails().Where(r => r.ColorId == colorId).ToList();
